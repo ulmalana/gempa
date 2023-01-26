@@ -1,6 +1,8 @@
 (ns gempa.core
   (:require [clojure.data.json :as json]
-            [gempa.database :as db])
+            [gempa.database :as db]
+            [gempa.route :as route]
+            [ring.adapter.jetty :as jetty])
   (:gen-class))
 
 (defn get-data []
@@ -16,15 +18,35 @@
 ;; get magnitude
 
 (defn extract-data [map-data]
-  (let [extract (get-in map-data [:Infogempa :gempa])]
-    (select-keys extract [:DateTime :Coordinates
-                          :Magnitude :Kedalaman
-                          :Wilayah :Shakemap])))
+  (let [extract (get-in map-data [:Infogempa :gempa])
+        selected-keys (select-keys extract [:DateTime :Coordinates
+                                            :Magnitude :Kedalaman
+                                            :Wilayah :Shakemap])
+        ;;hash-id (hash (vals (select-keys selected-keys [:Datetime :Coordinates])))
+        ]
+    ;;(assoc selected-keys :dataid (str hash-id))
+    selected-keys))
+
+(defn insert-data-to-db [extracted-data]
+  (db/insert-data db/db extracted-data))
+
+(defn add-new-data []
+  (let [data (extract-data (get-data-gempa))]
+    (insert-data-to-db data)))
+
+
+(def gempa-web
+  (jetty/run-jetty #'route/app {:port 5000
+                                :join? false}))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  "I don't do a whole lot ... yet"
+  [& [port]]
+  (let [port (Integer. (or port
+                           (System/getenv "PORT")
+                           5000))]
+    (jetty/run-jetty #'route/app {:port port
+                                  :join? false})))
 
 ;;;;
 
