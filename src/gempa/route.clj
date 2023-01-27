@@ -7,7 +7,9 @@
 
 (defroutes app-routes
   (GET "/" []
-       (view/home-page))
+       (view/home-page-hiccup))
+  (GET "/selmer" []
+       (view/home-page-selmer))
 
   (route/resources "/")
   (route/not-found "Page not found"))

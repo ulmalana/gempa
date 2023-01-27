@@ -10,7 +10,8 @@
                  [compojure "1.6.1"]
                  [hiccup "1.0.5"]
                  [ring/ring-defaults "0.3.2"]
-                 [ring/ring-jetty-adapter "1.9.6"]]
+                 [ring/ring-jetty-adapter "1.9.6"]
+                 [selmer "1.12.55"]]
   :main ^:skip-aot gempa.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
