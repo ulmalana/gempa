@@ -34,3 +34,7 @@
 (defn home-page-selmer []
   (let [all-data (db/get-all)]
     (selmer/render-file "test.html" {:all-data all-data})))
+
+(defn data-page [dataid]
+  (let [data-one (db/get-data-by-id dataid)]
+   (selmer/render-file "data.html" {:data (first data-one)})))

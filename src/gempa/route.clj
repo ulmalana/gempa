@@ -10,6 +10,8 @@
        (view/home-page-hiccup))
   (GET "/selmer" []
        (view/home-page-selmer))
+  (GET "/data/:dataid" [dataid]
+       (view/data-page dataid))
 
   (route/resources "/")
   (route/not-found "Page not found"))
