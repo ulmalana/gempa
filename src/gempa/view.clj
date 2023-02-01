@@ -37,4 +37,6 @@
 
 (defn data-page [dataid]
   (let [data-one (db/get-data-by-id dataid)]
-   (selmer/render-file "data.html" {:data (first data-one)})))
+    (if (empty? data-one)
+      (selmer/render-file "no-data.html" {})
+      (selmer/render-file "data.html" {:data (first data-one)}))))

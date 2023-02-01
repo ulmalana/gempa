@@ -16,7 +16,7 @@
   (try
     (jdbc/db-do-commands db
                          (jdbc/create-table-ddl :gempa
-                                                [[:DataID :integer "NOT_NULL" "PRIMARY_KEY" "AUTO_INCREMENT" :default 0]
+                                                [[:id "INTEGER" "PRIMARY KEY"]
                                                  [:DateTime :datetime :default :current_timestamp]
                                                  [:Coordinates :text]
                                                  [:Magnitude :text]
@@ -35,7 +35,7 @@
   (jdbc/query db ["select * from gempa"]))
 
 (defn get-data-by-id [id]
-  (jdbc/query db [(str "select * from gempa where dataid=" id)]))
+  (jdbc/query db [(str "select * from gempa where id=" id)]))
 
 ;; (defn insert-data [db map-data]
 ;;   (jdbc/insert! db :gempa map-data))
