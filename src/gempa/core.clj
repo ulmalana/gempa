@@ -34,6 +34,14 @@
   (let [data (extract-data (get-data-gempa))]
     (insert-data-to-db data)))
 
+(defn pull-data-bmkg! []
+  (let [data-puller (Thread. (fn []
+                               (while true
+                                ;; (println "Pulling data from BMKG...")
+                                (add-new-data)
+                                ;;(println "Data pulled.")
+                                (Thread/sleep 45000))))]
+    (.start data-puller)))
 
 (def gempa-web
   (jetty/run-jetty #'route/app {:port 5000
