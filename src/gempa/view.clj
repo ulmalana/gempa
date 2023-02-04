@@ -3,7 +3,10 @@
             [clojure.string :as str]
             [hiccup.page :as page]
             [ring.util.anti-forgery :as util]
-            [selmer.parser :as selmer]))
+            [selmer.parser :as selmer]
+            [java-time.api :as jt])
+  (:import [java.time ZonedDateTime]))
+
 
 (defn gen-page-head [title]
   [:head
@@ -14,12 +17,14 @@
    [:a {:href "/"} "Home"]])
 
 (defn home-page-hiccup []
-  (let [all-data (db/get-all)]
+  (let [all-data (db/get-all)
+        converted (map #(update % :datetime convert-to-local-time)
+                       all-data)]
     (page/html5
      (gen-page-head "Info gempa")
      header-links
      [:h1 "Info gempa"]
-      (for [data all-data]
+      (for [data converted]
         [:div
          [:p (str "Waktu: " (:datetime data))]
          [:p (str "Koordinat: " (:coordinates data))]
@@ -31,12 +36,22 @@
                           (:shakemap data))}]
          [:hr]]))))
 
+
+(defn convert-to-local-time [time-string]
+  (let [parsed-time (ZonedDateTime/parse time-string)
+        converted (jt/with-zone-same-instant parsed-time "+07:00")]
+    (str converted)))
+
 (defn home-page-selmer []
-  (let [all-data (db/get-all)]
-    (selmer/render-file "test.html" {:all-data all-data})))
+  (let [all-data (db/get-all)
+        converted (map #(update % :datetime convert-to-local-time)
+                       all-data)]
+    (selmer/render-file "test.html" {:all-data converted})))
 
 (defn data-page [dataid]
   (let [data-one (db/get-data-by-id dataid)]
     (if (empty? data-one)
       (selmer/render-file "no-data.html" {})
-      (selmer/render-file "data.html" {:data (first data-one)}))))
+      (let [extracted (first data-one)
+            converted (update extracted :datetime convert-to-local-time)]
+       (selmer/render-file "data.html" {:data converted})))))

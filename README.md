@@ -1,36 +1,16 @@
-# gempa
+# Gempa
 
-FIXME: description
+> Work in Progress
 
-## Installation
+Gempa is a simple web application for displaying earthquakes data from [BMKG](https://bmkg.go.id), Indonesian agency for meteorology, climatology, and geophysics. It is written from scratch (no framework, only libraries) in Clojure as part of my learning process.
 
-Download from http://example.com/FIXME.
+## How to run
 
-## Usage
-
-FIXME: explanation
-
-    $ java -jar gempa-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+TODO
 
 ## License
 
-Copyright © 2022 FIXME
+Copyright © 2022 Riz Maulana
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at

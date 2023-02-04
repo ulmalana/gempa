@@ -11,7 +11,8 @@
                  [hiccup "1.0.5"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-jetty-adapter "1.9.6"]
-                 [selmer "1.12.55"]]
+                 [selmer "1.12.55"]
+                 [clojure.java-time "1.2.0"]]
   :main ^:skip-aot gempa.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
