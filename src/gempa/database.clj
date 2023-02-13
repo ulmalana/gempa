@@ -19,7 +19,7 @@
                                                 [[:id "INTEGER" "PRIMARY KEY"]
                                                  [:DateTime :datetime :default :current_timestamp]
                                                  [:Coordinates :text]
-                                                 [:Magnitude :text]
+                                                 [:Magnitude :real]
                                                  [:Kedalaman :text]
                                                  [:Wilayah :text]
                                                  [:Shakemap :text]]))
@@ -50,6 +50,10 @@
                   (:Kedalaman map-data)
                   (:Wilayah map-data)
                   (:Shakemap map-data)]))
+
+(defn get-data-by-mag-range [min-mag max-mag]
+  (when (< min-mag max-mag)
+   (jdbc/query db [(str "select * from gempa where magnitude between " min-mag " and " max-mag)])))
 
 ;;(create-db)
 ;;(jdbc/insert! db :news testdata)

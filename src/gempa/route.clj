@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults
                                              site-defaults]]
+            [ring.middleware.anti-forgery :refer :all]
             [gempa.view :as view]))
 
 (defroutes app-routes
@@ -12,9 +13,13 @@
        (view/home-page-selmer))
   (GET "/data/:dataid" [dataid]
        (view/data-page dataid))
+  (GET "/cari-data" []
+       (view/cari-data))
+  (POST "/cari-data" {params :params}
+        (view/tampilkan-cari params))
 
   (route/resources "/")
-  (route/not-found "Page not found"))
+  (route/not-found "Halaman tidak ditemukan"))
 
 (def app
   (wrap-defaults app-routes site-defaults))
